@@ -1,0 +1,89 @@
+body {
+    background-color: #141414;
+    background-image: url('../images/fond-cinema.jpg'); /* optionnel */
+    background-size: cover;
+    background-position: center;
+}
+
+.conteneur-inscription {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 2rem;
+}
+
+.carte-inscription {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.carte-inscription h2 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.carte-inscription input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    font-size: 1rem;
+}
+
+.carte-inscription input::placeholder {
+    color: #aaa;
+}
+
+.carte-inscription input:focus {
+    outline: 2px solid red;
+    background-color: #454545;
+}
+
+.carte-inscription button {
+    width: 100%;
+    padding: 14px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.carte-inscription button:hover {
+    background-color: #c40000;
+}
+
+.message-erreur {
+    color: #ff6b6b;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.lien-connexion {
+    color: #aaa;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.lien-connexion a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.lien-connexion a:hover {
+    text-decoration: underline;
+}

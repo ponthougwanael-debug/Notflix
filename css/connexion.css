@@ -1,0 +1,105 @@
+/* =========================================
+   PAGE CONNEXION — THÈME NOTFLIX
+========================================= */
+
+.conteneur-connexion {
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    background-color: #0b0b0b;
+}
+
+.carte-connexion {
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.carte-connexion h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+.carte-connexion form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.carte-connexion label {
+    color: #d2d2d2;
+    font-weight: bold;
+}
+
+.carte-connexion input {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #454545;
+    border-radius: 4px;
+    background-color: #262626;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.carte-connexion input::placeholder {
+    color: #999999;
+}
+
+.carte-connexion input:focus {
+    outline: none;
+    border-color: #e50914;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+}
+
+.carte-connexion button {
+    margin-top: 10px;
+    padding: 13px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e50914;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.carte-connexion button:hover {
+    background-color: #b20710;
+    transform: translateY(-2px);
+}
+
+.message-erreur {
+    margin-top: 18px;
+    padding: 12px;
+    border: 1px solid #842029;
+    border-radius: 4px;
+    background-color: #3b171b;
+    color: #ffb3b8;
+    text-align: center;
+}
+
+.lien-inscription {
+    margin-top: 22px;
+    text-align: center;
+    color: #b3b3b3;
+}
+
+.lien-inscription a {
+    color: #e50914;
+    font-weight: bold;
+}
+
+.lien-inscription a:hover {
+    color: #ff4b55;
+    text-decoration: underline;
+}

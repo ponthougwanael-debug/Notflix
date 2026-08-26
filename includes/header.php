@@ -1,6 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+
+
 }
 
 $page_actuelle = basename($_SERVER['PHP_SELF'], '.php');
@@ -23,6 +25,13 @@ $page_actuelle = basename($_SERVER['PHP_SELF'], '.php');
 </head>
 
 <body>
+    <?php if (isset($_SESSION['message'])): ?>
+    <div class="message <?= htmlspecialchars($_SESSION['message']['type']) ?>">
+        <?= htmlspecialchars($_SESSION['message']['texte']) ?>
+    </div>
+
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
 
 <header class="barre-navigation">
 

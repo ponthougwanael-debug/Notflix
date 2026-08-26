@@ -838,3 +838,27 @@ footer {
     .grille-contenus { grid-template-columns: 1fr 1fr; }
     .carte-contenu img { height: 210px; }
 }
+
+.message {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Message lorsqu'un contenu est ajouté */
+.message.vert {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+/* Message lorsqu'un contenu est retiré */
+.message.rouge {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}

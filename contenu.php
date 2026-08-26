@@ -1,24 +1,42 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ==========================================
+// CONFIGURATION DU MODE DEBUG
+// ==========================================
+// Passez cette variable à false en production pour ne pas exposer
+// les erreurs PHP détaillées aux visiteurs (faille de sécurité potentielle)
+$modeDebug = true;
 
+if ($modeDebug) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+
+// Connexion à la base de données (fichier séparé pour la sécurité/réutilisabilité)
 require_once 'config/database.php';
 
+// ==========================================
+// RÉCUPÉRATION DES PARAMÈTRES DE RECHERCHE (GET)
+// ==========================================
+// trim() supprime les espaces avant/après
+// ?? '' évite une erreur si le paramètre n'existe pas dans l'URL
 $recherche = trim($_GET['q'] ?? '');
 $type = trim($_GET['type'] ?? '');
 $idGenre = trim($_GET['genre'] ?? '');
 
+// ==========================================
+// RÉCUPÉRATION DE LA LISTE DES GENRES (pour le <select>)
+// ==========================================
+// Pas de paramètre utilisateur ici, donc query() simple suffit (pas d'injection possible)
 $requeteGenres = $pdo->query("
     SELECT IdGenre, NomGenre
     FROM genre
     ORDER BY NomGenre ASC
 ");
-
 $genres = $requeteGenres->fetchAll(PDO::FETCH_ASSOC);
 
+// On cherche le nom du genre sélectionné (pour l'affichage du résumé de recherche)
 $nomGenreSelectionne = '';
-
 foreach ($genres as $genre) {
     if ((string) $genre['IdGenre'] === (string) $idGenre) {
         $nomGenreSelectionne = $genre['NomGenre'];
@@ -26,6 +44,10 @@ foreach ($genres as $genre) {
     }
 }
 
+// ==========================================
+// CONSTRUCTION DYNAMIQUE DE LA REQUÊTE SQL
+// ==========================================
+// On part d'une base "WHERE 1 = 1" pour pouvoir ajouter des "AND" facilement
 $sql = "
     SELECT contenu.*, genre.NomGenre
     FROM contenu
@@ -35,16 +57,20 @@ $sql = "
 
 $params = [];
 
+// Si l'utilisateur a tapé un mot-clé, on filtre sur le titre (recherche partielle avec LIKE)
 if ($recherche !== '') {
     $sql .= " AND contenu.Titre LIKE :recherche";
     $params[':recherche'] = '%' . $recherche . '%';
 }
 
+// Si un type (film/série) est choisi, on filtre dessus
+// ATTENTION : vérifiez que 'film'/'serie' correspond bien à la casse utilisée dans votre base
 if ($type !== '') {
     $sql .= " AND contenu.Type = :type";
     $params[':type'] = $type;
 }
 
+// Si un genre est choisi, on filtre dessus
 if ($idGenre !== '') {
     $sql .= " AND contenu.IdGenre = :genre";
     $params[':genre'] = $idGenre;
@@ -52,17 +78,17 @@ if ($idGenre !== '') {
 
 $sql .= " ORDER BY contenu.Titre ASC";
 
+// Requête préparée = protection contre les injections SQL
 $requete = $pdo->prepare($sql);
 $requete->execute($params);
-
 $toutContenu = $requete->fetchAll(PDO::FETCH_ASSOC);
 
 include 'includes/header.php';
 ?>
 
-
 <form method="GET" action="contenu.php" class="form-recherche" id="formRecherche">
 
+    <!-- Champ de recherche texte -->
     <input
         type="search"
         id="rechercheLocale"
@@ -71,18 +97,20 @@ include 'includes/header.php';
         value="<?= htmlspecialchars($recherche) ?>"
     >
 
+    <!-- Filtre par type : valeurs en minuscules pour correspondre à la base -->
     <select name="type" id="filtreType">
         <option value="">Films et séries</option>
 
-        <option value="Film" <?= $type === 'Film' ? 'selected' : '' ?>>
+        <option value="film" <?= $type === 'film' ? 'selected' : '' ?>>
             Films
         </option>
 
-        <option value="Série" <?= $type === 'Série' ? 'selected' : '' ?>>
+        <option value="serie" <?= $type === 'serie' ? 'selected' : '' ?>>
             Séries
         </option>
     </select>
 
+    <!-- Filtre par genre, généré dynamiquement depuis la base -->
     <select name="genre" id="filtreGenre">
         <option value="">Tous les genres</option>
 
@@ -104,7 +132,8 @@ include 'includes/header.php';
 
 <div id="resultatsContenu">
 
-<?php if ($recherche !== '' || $type !== '' || $idGenre !== '' ): ?>
+<?php if ($recherche !== '' || $type !== '' || $idGenre !== ''): ?>
+    <!-- Résumé des critères de recherche actifs -->
     <p class="resultat-recherche">
         Résultat correspondant à :
 
@@ -117,11 +146,8 @@ include 'includes/header.php';
         <?php endif; ?>
 
         <?php if ($nomGenreSelectionne !== ''): ?>
-            — Genre :
-                     <strong><?= htmlspecialchars($nomGenreSelectionne) ?></strong>
-<?php endif; ?>
-
-
+            — Genre : <strong><?= htmlspecialchars($nomGenreSelectionne) ?></strong>
+        <?php endif; ?>
     </p>
 <?php endif; ?>
 
@@ -130,14 +156,14 @@ include 'includes/header.php';
             <h2>
                 <?php if ($recherche !== '' || $type !== '' || $idGenre !== ''): ?>
                     Résultat de la recherche
-                    <?php else: ?>
-                        Tous nos films et Séries
-                        <?php endif; ?>
-
+                <?php else: ?>
+                    Tous nos films et Séries
+                <?php endif; ?>
             </h2>
 
             <?php if (empty($toutContenu)): ?>
 
+                <!-- Aucun résultat trouvé -->
                 <p class="aucun-resultat">
                     Aucun film ou série trouvé.
                 </p>
@@ -148,17 +174,21 @@ include 'includes/header.php';
 
                     <?php foreach ($toutContenu as $item): ?>
 
+                        <?php
+                        // Image par défaut si le champ Affiche est vide en base
+                        $affiche = !empty($item['Affiche']) ? $item['Affiche'] : 'default.jpg';
+                        ?>
+
                         <div class="carte">
 
                             <div class="carte-image">
                                 <img
-                                    src="Images/<?= htmlspecialchars($item['Affiche']) ?>"
+                                    src="Images/<?= htmlspecialchars($affiche) ?>"
                                     class="fond-flou"
                                     alt=""
                                 >
-
                                 <img
-                                    src="Images/<?= htmlspecialchars($item['Affiche']) ?>"
+                                    src="Images/<?= htmlspecialchars($affiche) ?>"
                                     class="affiche-nette"
                                     alt="<?= htmlspecialchars($item['Titre']) ?>"
                                 >
@@ -213,8 +243,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    // Désactive le bouton pendant l'envoi pour éviter les doubles clics/soumissions
     formulaire.addEventListener('submit', function () {
-        const bouton = formulaire.querySelectorh2('button[type="submit"]');
+        const bouton = formulaire.querySelector('button[type="submit"]');
 
         if (bouton) {
             bouton.disabled = true;

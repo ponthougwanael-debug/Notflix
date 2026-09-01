@@ -1,39 +1,49 @@
 <?php
-session_start();
+session_start(); /* Démmarre ou reprend une session PHP. Cela permet de savoir si un utilisateur est connectée */ 
 
-require_once 'config/database.php';
+require_once 'config/database.php'; /* Charge la connecion à la base de données  */ 
 
-$typeUrl = strtolower(trim($_GET['type'] ?? ''));
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$typeUrl = strtolower(trim($_GET['type'] ?? ''));   /* Récupère le paramètre type dans l'url, ?? '' utilise une chaine vide si le paramètre n'existe pas, trim() : supprime les espaces inutiles, strtolower() : convertit le texte en minuscule  */ 
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);   /* Récupère et vérifie que les paramètre id est bien un nombre entier  */
 
-if (!$id || !in_array($typeUrl, ['film', 'série'], true)) {
-    header('Location: accueil.php');
+if (!$id || !in_array($typeUrl, ['film', 'série'], true)) {  /* Vérifie si un identifiant existe, le type est soit un $film ou une $serie */ 
+    header('Location: accueil.php'); /* Si les paramètre sont invalide, l'utilisateur est redigiré vers accueil.php, puis le script s'arrête  */ 
     exit;
 }
 
 // Valeur correspondant à la base de données
-$typeBDD = $typeUrl === 'film' ? 'Film' : 'Série';
 
-$stmt = $pdo->prepare("
-    SELECT *
+
+$typeBDD = $typeUrl === 'film' ? 'Film' : 'Série'; /* Convertit le type d'url en valeur utilisé dan la base de donnée    */ 
+
+$stmt = $pdo->prepare(" 
+    SELECT * 
     FROM Contenu
     WHERE IdContenu = :id
     AND LOWER(Type) = LOWER(:type)
-");
+");     /* Prépare une requète SQL pour récuperer un contenu prècis, SELECT * : recupère toute les colonnes, IdContenu = :id : recherche l'identifiant demandé, :id et type : sont des paramètes protégés, LOWER() : permet de comparer les types sans tenir compte des majuscules. L'utilisation de prepare() protège contre les injections SQL.   */
 
 $stmt->execute([
     ':id' => $id,
     ':type' => $typeBDD
-]);
+]);     /* Exécute la requète en associant les valeurs aux paramètres SQL  */
 
-$contenu = $stmt->fetch(PDO::FETCH_ASSOC);
+$contenu = $stmt->fetch(PDO::FETCH_ASSOC); /* Récupère le résultat sosu forme de tableau associatif  */ 
 
 if (!$contenu) {
     header('Location: accueil.php');
     exit;
-}
+}   /* Si le contenu n'est pas trouvé, redirection vers accueil.php   */
 
-include 'includes/header.php';
+include 'includes/header.php';  /* Insère l'en-tête du site */
+
+
+/* ---------------------------------------------------------------------------- 
+
+        PREPARATION DES DONNEES
+
+ ------------------------------------------------------------------------------ */
+
 
 $titre = htmlspecialchars($contenu['Titre']);
 $affiche = htmlspecialchars($contenu['Affiche']);

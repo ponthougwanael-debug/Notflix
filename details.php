@@ -1,7 +1,7 @@
 <?php
 session_start(); /* Démmarre ou reprend une session PHP. Cela permet de savoir si un utilisateur est connectée */ 
 
-require_once 'config/database.php'; /* Charge la connecion à la base de données  */ 
+require_once 'config/database.php'; /* Charge la connecion à la base de données stockée dans $pdo  */ 
 
 $typeUrl = strtolower(trim($_GET['type'] ?? ''));   /* Récupère le paramètre type dans l'url, ?? '' utilise une chaine vide si le paramètre n'existe pas, trim() : supprime les espaces inutiles, strtolower() : convertit le texte en minuscule  */ 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);   /* Récupère et vérifie que les paramètre id est bien un nombre entier  */
@@ -44,70 +44,93 @@ include 'includes/header.php';  /* Insère l'en-tête du site */
 
  ------------------------------------------------------------------------------ */
 
-
-$titre = htmlspecialchars($contenu['Titre']);
-$affiche = htmlspecialchars($contenu['Affiche']);
+$titre = htmlspecialchars($contenu['Titre']);   /* Protège et prépare le titre pour l'affichage HTML  */
+$affiche = htmlspecialchars($contenu['Affiche']);   /* Protège le nom du fichier image  */
 $description = htmlspecialchars(
     $contenu['Description'] ?? 'Aucun synopsis disponible.'
-);
-$annee = htmlspecialchars($contenu['Annee'] ?? '-');
-$labelType = $typeUrl === 'film' ? 'Film' : 'Série';
+);  /* Récupère la description. Si elle est absente, affiche le message 'Aucun synopsis disponible' */
+$annee = htmlspecialchars($contenu['Annee'] ?? '-');    /* Récupère l'année. Si elle est absente affiche '-' */
+$labelType = $typeUrl === 'film' ? 'Film' : 'Série';    /* Prépare le type à afficher à l'écran */
 ?>
 
-<div class="conteneur-detail">
-    <a href="javascript:history.back()" class="btn-retour">← Retour</a>
+<!----------------------------------------------------------------------------- 
+ 
+        STRUCTURE HTML PRINCIPALE 
 
-    <div class="fiche-detail">
+------------------------------------------------------------------------------- -->
+
+<div class="conteneur-detail">  <!-- Crée le conteneur principale de la page de détails    -->
+    <a href="javascript:history.back()" class="btn-retour">← Retour</a> <!-- Crée un bouton permettant de revenir à la page précédente    --> 
+
+    <div class="fiche-detail">  <!-- Contient l'affiche et les information du contenu  -->
         <img
-            src="Images/<?= $affiche ?>"
+            src="Images/<?= $affiche ?>" 
             alt="<?= $titre ?>"
             class="affiche-detail"
             draggable="false"
             oncontextmenu="return false;"
-        >
+        >   <!-- Affiche l'image située dans le dossier Images. Utilise le titre comme texte alternatif de l'image. Applique le style CSS de l'affiche détaillée Empêche l'image d'être déplacée par glisser-déposer. Désactive le menu contextuel au clic droit sur l'image "     -->
 
-        <div class="infos-detail">
-            <h1><?= $titre ?></h1>
+        <div class="infos-detail">  <!-- Contient les informations textuelles     -->
+            <h1><?= $titre ?></h1>  <!-- Affiche le titre principale du contenu     -->
 
-            <span class="badge-type">
+            <span class="badge-type">   <!-- Affiche un badge indiquant s'il s'agit d'un film ou d'une série     -->
                 <?= $labelType ?>
             </span>
 
-            <p class="synopsis"><?= $description ?></p>
+            <p class="synopsis"><?= $description ?></p>     <!-- Affiche le synposis     -->
+<!------------------------------------------------------------------------------------ 
+            AFFICHAGE DE LA DUREE
+------------------------------------------------------------------------------------->
 
-            <?php if ($typeUrl === 'film'): ?>
+            <?php if ($typeUrl === 'film'): ?>  <!-- Commence une condition : la durée sera affichée uniquement pour les films     -->
                 <p>
-                    <strong>Durée :</strong>
-                    <?= htmlspecialchars($contenu['Duree'] ?? '-') ?> min
+                    <strong>Durée :</strong>    <!-- Affiche le mot "durée" en gras -->
+                    <?= htmlspecialchars($contenu['Duree'] ?? '-') ?> min   <!-- Affiche la durée du film en minutes. Si elle est absente, affiche "-"     -->
                 </p>
-            <?php endif; ?>
+            <?php endif; ?>     <!-- Termine la condition.     -->
+
+<!-- --------------------------------------------------------------------------------
+
+        AFFICHAGE DE L'ANNEE
+
+------------------------------------------------------------------------------------->
 
             <p>
-                <strong>Année :</strong>
-                <?= $annee ?>
-            </p>
-            <?php if (isset($_SESSION['IdUtilisateur'])): ?>
+                <strong>Année :</strong>    <!-- Affiche le libellé en gras     -->
+                <?= $annee ?>   <!-- Affiche l'année préparée précedemment      -->
 
-                <form method="POST" action="ajouter-liste.php">
+            </p>
+<!-- --------------------------------------------------------------------------------
+
+      GESTION DE LA LISTE PERSONNELLE
+
+------------------------------------------------------------------------------------->
+
+
+
+            <?php if (isset($_SESSION['IdUtilisateur'])): ?>    <!-- Vérifie si l'utilisateur est connecté. La session contient IdUtilisateur lorsq'une connexion a été établie-->
+
+                <form method="POST" action="ajouter-liste.php">     <!-- Crée un formulaire qui envoie les données avec la méthode POST vers ajouter-liste.php     -->
                  <input
                      type="hidden"
                      name="id_contenu"
                     value="<?= (int) $contenu['IdContenu'] ?>"
-                >
+                >   <!-- Envoie discrètement l'identifiant du contenu. Type hidden rend le champ invisible. int() convertit la valeur en entier     -->
 
-                     <button type="submit" class="btn-ajouter-liste">
+                     <button type="submit" class="btn-ajouter-liste">   <!-- Crée le bouton permettant d'ajouter le contenu à la liste personelle     -->
                         + Ma liste
                     </button>
                 </form>
 
                 
-                <?php else : ?>
-                <a href="includes/connexion.php" class="btn-ajouter-liste">
+                <?php else : ?> <!-- S'éxécute si l'utilisateur n'est pas connecté     -->
+                <a href="includes/connexion.php" class="btn-ajouter-liste"> <!-- Affiche un lien vers la page de connexion     -->
                     Connectez-vous pour ajouter à ma liste
                 </a>
-            <?php endif; ?>
+            <?php endif; ?>     <!-- Termine la condition de connexion     -->
         </div>
-    </div>
-</div>
+    </div>      <!-- Ferme les conteneurs d’informations et de fiche  -->
+</div>  <!-- Ferme le conteneur principal     -->
 
-<?php include 'includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>     <!-- Insère le pied de page commun du site     -->

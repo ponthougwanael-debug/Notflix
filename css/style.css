@@ -1,12 +1,14 @@
 /*
- * Notflix — feuille de styles unifiée et dédoublonnée.
- * Les sélecteurs existants sont conservés ; aucun HTML/PHP/JS n'est requis.
+ * Notflix — feuille de styles principale.
+ * Ce fichier définit l'apparence générale du site.
  */
 
 /* ===============================
-   Variables, reset et accessibilité
+   Variables générales
 ================================== */
+
 :root {
+    /* Couleurs utilisées dans tout le site. */
     --notflix-noir: #0b0b0b;
     --notflix-header: #141414;
     --notflix-fond: #1a1a1a;
@@ -20,71 +22,91 @@
     --notflix-gris-fonce: #757575;
     --notflix-rouge: #e50914;
     --notflix-rouge-hover: #b20710;
+
+    /* Couleurs utilisées pour les messages d'erreur. */
     --notflix-erreur-fond: #3b171b;
     --notflix-erreur-bordure: #842029;
     --notflix-erreur-texte: #ffb3b8;
+
+    /* Couleurs et effets généraux. */
     --notflix-focus: #ffffff;
     --notflix-rayon: 4px;
     --notflix-transition: 0.2s ease;
 }
 
+/* Définit la couleur de fond de toute la page HTML. */
 html {
     background: var(--notflix-noir);
 }
 
+/* Réinitialise les marges et les espacements par défaut. */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Style général du corps de la page. */
 body {
-    position: relative;
-    min-width: 0;
-    overflow-x: hidden;
-    background-color: var(--notflix-noir);
-    color: var(--notflix-texte);
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.6;
+    position: relative; /* Permet de positionner des éléments par rapport au body. */
+    min-width: 0; /* Empêche le contenu de créer un débordement horizontal. */
+    overflow-x: hidden; /* Cache les débordements horizontaux. */
+    background-color: var(--notflix-noir); /* Définit le fond noir. */
+    color: var(--notflix-texte); /* Définit la couleur générale du texte. */
+    font-family: Arial, Helvetica, sans-serif; /* Définit la police utilisée. */
+    line-height: 1.6; /* Augmente l'espace entre les lignes. */
 }
 
+/* Ajoute une lumière rouge floutée à l'arrière-plan. */
 body::before {
-    content: "";
-    position: fixed;
-    inset: -40px;
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(circle at 85% 10%, rgba(229, 9, 20, 0.18), transparent 42%);
-    filter: blur(45px);
-    opacity: 0.65;
+    content: ""; /* Crée l'élément décoratif. */
+    position: fixed; /* Le garde fixe pendant le défilement. */
+    inset: -40px; /* Agrandit la zone de l'effet. */
+    z-index: -1; /* Place l'effet derrière le contenu. */
+    pointer-events: none; /* Empêche l'effet de bloquer les clics. */
+    background: radial-gradient(
+        circle at 85% 10%,
+        rgba(229, 9, 20, 0.18),
+        transparent 42%
+    );
+    filter: blur(45px); /* Floute la lumière. */
+    opacity: 0.65; /* Rend l'effet semi-transparent. */
 }
 
+/* Style général des liens. */
 a {
     color: var(--notflix-texte);
-    text-decoration: none;
-    transition: color var(--notflix-transition), background-color var(--notflix-transition),
-                transform var(--notflix-transition), box-shadow var(--notflix-transition);
+    text-decoration: none; /* Supprime le soulignement. */
+    transition:
+        color var(--notflix-transition),
+        background-color var(--notflix-transition),
+        transform var(--notflix-transition),
+        box-shadow var(--notflix-transition);
 }
 
+/* Utilise la même police pour les boutons et les champs. */
 button,
 input,
 select {
     font: inherit;
 }
 
+/* Style visible lorsque l'utilisateur navigue au clavier. */
 :focus-visible {
     outline: 2px solid var(--notflix-focus);
     outline-offset: 2px;
 }
 
 /* ===============================
-   Navigation commune
+   Navigation
 ================================== */
+
+/* Style de la barre de navigation. */
 header,
 .barre-navigation {
-    position: sticky;
+    position: sticky; /* La navigation reste visible en haut. */
     top: 0;
-    z-index: 1000;
+    z-index: 1000; /* Place la navigation au-dessus du contenu. */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -96,6 +118,7 @@ header,
     box-shadow: 0 5px 18px rgba(0, 0, 0, 0.35);
 }
 
+/* Style du logo Notflix. */
 .logo,
 .logo a {
     color: var(--notflix-rouge);
@@ -106,10 +129,12 @@ header,
     white-space: nowrap;
 }
 
+/* Change la couleur du logo au survol. */
 .logo a:hover {
     color: var(--notflix-rouge-hover);
 }
 
+/* Organise les éléments de navigation. */
 nav,
 .barre-navigation nav {
     display: flex;
@@ -119,14 +144,16 @@ nav,
     gap: 10px;
 }
 
+/* Affiche les éléments de la liste horizontalement. */
 nav ul {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    list-style: none;
+    list-style: none; /* Supprime les puces. */
 }
 
+/* Style des liens et du bouton de recherche. */
 nav a,
 #boutonRecherche {
     display: inline-block;
@@ -138,10 +165,10 @@ nav a,
     font-size: 0.95rem;
     font-weight: 700;
     line-height: 1.2;
-    text-decoration: none;
     cursor: pointer;
 }
 
+/* Effet au survol ou lors de la navigation au clavier. */
 nav a:hover,
 nav a:focus-visible,
 #boutonRecherche:hover,
@@ -152,28 +179,34 @@ nav a:focus-visible,
     box-shadow: 0 6px 18px rgba(229, 9, 20, 0.3);
 }
 
+/* Style du message de bienvenue. */
 .bienvenue {
     padding: 10px 14px;
     color: var(--notflix-texte);
     font-size: 0.95rem;
 }
 
+/* Donne une couleur grise au bouton de déconnexion. */
 .bouton-deconnexion {
     background: #444444 !important;
 }
 
+/* Éclaircit le bouton de déconnexion au survol. */
 .bouton-deconnexion:hover {
     background: #555555 !important;
 }
 
+/* Ajuste le bouton de recherche. */
 #boutonRecherche {
     margin: 0;
     box-shadow: 0 4px 14px rgba(229, 9, 20, 0.18);
 }
 
 /* ===============================
-   Accueil et mise en avant
+   Accueil
 ================================== */
+
+/* Grande bannière d'accueil. */
 .hero-banner {
     display: flex;
     align-items: center;
@@ -183,22 +216,26 @@ nav a:focus-visible,
     border-bottom: 2px solid var(--notflix-header);
 }
 
+/* Limite la largeur du contenu de la bannière. */
 .hero-content {
     max-width: 500px;
 }
 
+/* Style du grand titre de la bannière. */
 .hero-content h1 {
     margin-bottom: 10px;
     font-size: 4rem;
     text-transform: uppercase;
 }
 
+/* Style du texte de présentation. */
 .hero-content p {
     margin-bottom: 25px;
     color: #bdbdbd;
     font-size: 1.2rem;
 }
 
+/* Style du bouton de lecture. */
 .btn-lecture {
     display: inline-block;
     padding: 12px 24px;
@@ -209,11 +246,13 @@ nav a:focus-visible,
     font-weight: 700;
 }
 
+/* Agrandit légèrement le bouton au survol. */
 .btn-lecture:hover {
     background: var(--notflix-rouge-hover);
     transform: scale(1.05);
 }
 
+/* Section du contenu mis en avant. */
 .a-la-une {
     position: relative;
     width: 100%;
@@ -223,6 +262,7 @@ nav a:focus-visible,
     overflow: hidden;
 }
 
+/* Image principale de la section. */
 .a-la-une img {
     display: block;
     width: 100%;
@@ -231,6 +271,7 @@ nav a:focus-visible,
     filter: brightness(0.5) blur(3px);
 }
 
+/* Positionne les informations sur l'image. */
 .infos-une {
     position: absolute;
     bottom: 50px;
@@ -238,12 +279,14 @@ nav a:focus-visible,
     max-width: 500px;
 }
 
+/* Style du titre mis en avant. */
 .infos-une h2 {
     margin-bottom: 10px;
     font-size: 3rem;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
+/* Style de l'année du contenu. */
 .infos-une p {
     margin-bottom: 20px;
     color: #d2d2d2;
@@ -251,6 +294,7 @@ nav a:focus-visible,
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
 }
 
+/* Bouton permettant d'afficher les détails. */
 .btn-voir-detail {
     display: inline-block;
     padding: 12px 28px;
@@ -260,24 +304,29 @@ nav a:focus-visible,
     font-weight: 700;
 }
 
+/* Change la couleur du bouton au survol. */
 .btn-voir-detail:hover {
     background: var(--notflix-rouge-hover);
 }
 
+/* Ajoute des espacements aux sections de contenu. */
 .contenu-section {
     padding: 40px 50px;
 }
 
+/* Style des titres de section. */
 .contenu-section h2 {
     margin-bottom: 20px;
     font-size: 1.8rem;
 }
 
+/* Style général des sections de découverte. */
 .decouverte {
     margin-bottom: 30px;
     padding: 20px clamp(20px, 5vw, 50px);
 }
 
+/* Style des titres « Films » et « Séries ». */
 .decouverte h2 {
     margin-bottom: 15px;
     padding-left: 10px;
@@ -286,7 +335,7 @@ nav a:focus-visible,
     font-size: 1.6rem;
 }
 
-/* Les affiches de l'accueil restent sur une ligne et se défilent horizontalement. */
+/* Affiche les cartes sur une ligne avec défilement horizontal. */
 .liste-cartes {
     display: flex;
     flex-wrap: nowrap;
@@ -298,6 +347,7 @@ nav a:focus-visible,
     scrollbar-color: var(--notflix-rouge) var(--notflix-surface-2);
 }
 
+/* Style général d'une carte de contenu. */
 .carte {
     flex: 0 0 260px;
     overflow: hidden;
@@ -305,15 +355,19 @@ nav a:focus-visible,
     background: var(--notflix-surface);
     text-align: center;
     animation: apparitionCarte 0.35s ease;
-    transition: transform var(--notflix-transition), box-shadow var(--notflix-transition);
+    transition:
+        transform var(--notflix-transition),
+        box-shadow var(--notflix-transition);
 }
 
+/* Agrandit la carte au survol. */
 .carte:hover {
     z-index: 2;
     transform: scale(1.05);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
+/* Style du titre présent sur une carte. */
 .carte h3 {
     overflow: hidden;
     margin: 10px 8px 4px;
@@ -323,12 +377,14 @@ nav a:focus-visible,
     text-overflow: ellipsis;
 }
 
+/* Style de l'année présente sur une carte. */
 .carte p {
     margin: 0 8px 10px;
     color: #a0a0a0;
     font-size: 0.85rem;
 }
 
+/* Style des boutons présents dans les cartes. */
 .carte a {
     display: inline-block;
     margin: 0 8px 15px;
@@ -339,10 +395,12 @@ nav a:focus-visible,
     font-size: 0.85rem;
 }
 
+/* Change la couleur du bouton au survol. */
 .carte a:hover {
     background: var(--notflix-rouge-hover);
 }
 
+/* Zone contenant les affiches. */
 .carte-image {
     position: relative;
     width: 100%;
@@ -351,6 +409,7 @@ nav a:focus-visible,
     background: var(--notflix-carte);
 }
 
+/* Image floue placée en arrière-plan. */
 .carte-image .fond-flou {
     position: absolute;
     inset: 0;
@@ -361,6 +420,7 @@ nav a:focus-visible,
     transform: scale(1.15);
 }
 
+/* Image nette placée au-dessus de l'arrière-plan. */
 .carte-image .affiche-nette {
     position: relative;
     z-index: 1;
@@ -370,6 +430,7 @@ nav a:focus-visible,
     object-fit: contain;
 }
 
+/* Centre le bouton du catalogue. */
 .voir-plus {
     display: flex;
     align-items: center;
@@ -379,6 +440,7 @@ nav a:focus-visible,
     text-align: center;
 }
 
+/* Style du bouton « Voir le catalogue ». */
 .btn-catalogue {
     display: inline-block;
     visibility: visible;
@@ -391,6 +453,7 @@ nav a:focus-visible,
     font-weight: 700;
 }
 
+/* Remplit le bouton au survol ou au clavier. */
 .btn-catalogue:hover,
 .btn-catalogue:focus-visible {
     background: var(--notflix-rouge);
@@ -398,8 +461,10 @@ nav a:focus-visible,
 }
 
 /* ===============================
-   Détail
+   Page détail
 ================================== */
+
+/* Conteneur principal de la page détail. */
 .conteneur-detail {
     width: 100%;
     max-width: 1200px;
@@ -407,6 +472,7 @@ nav a:focus-visible,
     padding: 70px 50px;
 }
 
+/* Organise l'affiche et les informations. */
 .fiche-detail {
     display: flex;
     align-items: flex-start;
@@ -417,6 +483,7 @@ nav a:focus-visible,
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
+/* Style de l'affiche de détail. */
 .affiche-detail {
     display: block;
     flex: 0 0 320px;
@@ -429,12 +496,14 @@ nav a:focus-visible,
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
 }
 
+/* Permet aux informations de prendre l'espace restant. */
 .infos-detail {
     flex: 1;
     min-width: 0;
     padding-top: 5px;
 }
 
+/* Style du titre de la page détail. */
 .infos-detail h1 {
     margin-bottom: 14px;
     color: #ffffff;
@@ -442,6 +511,7 @@ nav a:focus-visible,
     line-height: 1.2;
 }
 
+/* Badge indiquant s'il s'agit d'un film ou d'une série. */
 .badge-type {
     display: inline-block;
     margin-bottom: 26px;
@@ -455,6 +525,7 @@ nav a:focus-visible,
     text-transform: uppercase;
 }
 
+/* Style du synopsis. */
 .synopsis {
     max-width: 680px;
     margin-bottom: 28px;
@@ -463,15 +534,18 @@ nav a:focus-visible,
     line-height: 1.75;
 }
 
+/* Style des autres informations de la fiche. */
 .infos-detail > p:not(.synopsis) {
     margin-bottom: 12px;
     color: #a0a0a0;
 }
 
+/* Met en évidence les mots importants. */
 .infos-detail > p:not(.synopsis) strong {
     color: #ffffff;
 }
 
+/* Bouton d'ajout à la liste personnelle. */
 .btn-ajouter-liste {
     display: inline-block;
     margin-top: 20px;
@@ -484,12 +558,14 @@ nav a:focus-visible,
     cursor: pointer;
 }
 
+/* Effet du bouton au survol. */
 .btn-ajouter-liste:hover {
     background: var(--notflix-rouge-hover);
     transform: translateY(-2px);
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.35);
 }
 
+/* Style du bouton de retour. */
 .btn-retour {
     display: inline-block;
     margin-bottom: 20px;
@@ -501,6 +577,7 @@ nav a:focus-visible,
     font-weight: 600;
 }
 
+/* Déplace le bouton légèrement vers la gauche au survol. */
 .btn-retour:hover {
     background: #3a3a3a;
     transform: translateX(-3px);
@@ -509,6 +586,8 @@ nav a:focus-visible,
 /* ===============================
    Recherche
 ================================== */
+
+/* Mise en forme des formulaires de recherche. */
 .form-recherche,
 body > form:not(.form-recherche) {
     display: flex;
@@ -519,6 +598,7 @@ body > form:not(.form-recherche) {
     margin: 30px auto;
 }
 
+/* Style des champs de recherche et des listes déroulantes. */
 .form-recherche input,
 .form-recherche select,
 body > form:not(.form-recherche) input {
@@ -533,20 +613,24 @@ body > form:not(.form-recherche) input {
     color-scheme: dark;
 }
 
+/* Le champ de recherche prend l'espace disponible. */
 .form-recherche input {
     flex: 1;
 }
 
+/* Définit une largeur minimale pour la sélection du type. */
 .form-recherche select {
     min-width: 160px;
     padding-right: 34px;
 }
 
+/* Couleur du texte indicatif dans les champs. */
 .form-recherche input::placeholder,
 body > form:not(.form-recherche) input::placeholder {
     color: #999999;
 }
 
+/* Met en évidence un champ sélectionné. */
 .form-recherche input:focus,
 .form-recherche select:focus,
 body > form:not(.form-recherche) input:focus {
@@ -554,6 +638,7 @@ body > form:not(.form-recherche) input:focus {
     box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
 }
 
+/* Style des boutons de recherche. */
 .form-recherche button,
 body > form:not(.form-recherche) button {
     min-height: 48px;
@@ -566,6 +651,7 @@ body > form:not(.form-recherche) button {
     cursor: pointer;
 }
 
+/* Effet au survol ou lors de la navigation au clavier. */
 .form-recherche button:hover,
 .form-recherche button:focus-visible,
 body > form:not(.form-recherche) button:hover,
@@ -574,16 +660,19 @@ body > form:not(.form-recherche) button:focus-visible {
     transform: translateY(-1px);
 }
 
+/* Annule le déplacement lorsque le bouton est cliqué. */
 .form-recherche button:active {
     transform: translateY(0);
 }
 
+/* Définit la couleur des résultats de recherche. */
 #resultatsContenu,
 #resultatsContenu h2,
 .resultat-recherche + main h2 {
     color: var(--notflix-blanc);
 }
 
+/* Style du texte indiquant les critères de recherche. */
 .resultat-recherche {
     width: min(calc(100% - 40px), 1200px);
     max-width: 1200px;
@@ -592,10 +681,12 @@ body > form:not(.form-recherche) button:focus-visible {
     text-align: center;
 }
 
+/* Met les critères recherchés en blanc. */
 .resultat-recherche strong {
     color: var(--notflix-blanc);
 }
 
+/* Message affiché lorsqu'aucun résultat n'est trouvé. */
 .aucun-resultat {
     max-width: 600px;
     margin: 20px auto;
@@ -607,20 +698,31 @@ body > form:not(.form-recherche) button:focus-visible {
     text-align: center;
 }
 
+/* Animation d'apparition des cartes. */
 @keyframes apparitionCarte {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ===============================
    Ma liste
 ================================== */
+
+/* Style général des titres h1. */
 h1 {
     margin: 40px 50px 25px;
     color: #ffffff;
     font-size: 2rem;
 }
 
+/* Organise les contenus sous forme de grille. */
 .grille-contenus {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -628,6 +730,7 @@ h1 {
     padding: 0 50px 40px;
 }
 
+/* Style d'une carte de la liste personnelle. */
 .carte-contenu {
     overflow: hidden;
     padding-bottom: 18px;
@@ -635,14 +738,18 @@ h1 {
     border-radius: 7px;
     background: var(--notflix-surface);
     text-align: center;
-    transition: transform var(--notflix-transition), box-shadow var(--notflix-transition);
+    transition:
+        transform var(--notflix-transition),
+        box-shadow var(--notflix-transition);
 }
 
+/* Soulève la carte au survol. */
 .carte-contenu:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Style de l'affiche dans la liste. */
 .carte-contenu img {
     display: block;
     width: 100%;
@@ -650,6 +757,7 @@ h1 {
     object-fit: cover;
 }
 
+/* Style du titre d'un contenu sauvegardé. */
 .carte-contenu h2 {
     overflow: hidden;
     margin: 14px 10px;
@@ -659,6 +767,7 @@ h1 {
     text-overflow: ellipsis;
 }
 
+/* Style du lien vers les détails. */
 .carte-contenu > a {
     display: inline-block;
     margin-bottom: 12px;
@@ -670,12 +779,17 @@ h1 {
     font-weight: 700;
 }
 
+/* Effet du lien au survol. */
 .carte-contenu > a:hover {
     background: var(--notflix-rouge-hover);
 }
 
-.carte-contenu form { margin: 0; }
+/* Supprime la marge autour d'un formulaire dans une carte. */
+.carte-contenu form {
+    margin: 0;
+}
 
+/* Style du bouton présent dans une carte. */
 .carte-contenu button {
     padding: 8px 14px;
     border: 0;
@@ -686,97 +800,16 @@ h1 {
     cursor: pointer;
 }
 
-.carte-contenu button:hover { background: #666666; }
+/* Éclaircit le bouton au survol. */
+.carte-contenu button:hover {
+    background: #666666;
+}
 
 /* ===============================
-   Connexion / inscription / pied de page
+   Pied de page
 ================================== */
-.conteneur-connexion,
-.conteneur-inscription {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 75vh;
-    padding: 50px 20px;
-}
 
-.carte-connexion,
-.carte-inscription {
-    width: 100%;
-    max-width: 420px;
-    padding: 35px;
-    border-radius: 8px;
-    background: rgba(31, 31, 31, 0.96);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-}
-
-.carte-inscription { max-width: 400px; }
-
-.carte-connexion h2,
-.carte-inscription h2 {
-    margin-bottom: 25px;
-    color: #ffffff;
-    font-size: 2rem;
-    text-align: center;
-}
-
-.carte-connexion form,
-.carte-inscription form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.carte-connexion label { color: #d2d2d2; font-weight: 700; }
-
-.carte-connexion input,
-.carte-inscription input {
-    width: 100%;
-    padding: 13px 15px;
-    border: 1px solid var(--notflix-bordure);
-    border-radius: var(--notflix-rayon);
-    background: var(--notflix-surface-2);
-    color: #ffffff;
-}
-
-.carte-inscription input { margin-bottom: 15px; }
-
-.carte-connexion input::placeholder,
-.carte-inscription input::placeholder { color: #999999; }
-
-.carte-connexion button,
-.carte-inscription button {
-    width: 100%;
-    margin-top: 10px;
-    padding: 13px;
-    border: 0;
-    border-radius: var(--notflix-rayon);
-    background: var(--notflix-rouge);
-    color: #ffffff;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.carte-connexion button:hover,
-.carte-inscription button:hover { background: var(--notflix-rouge-hover); transform: translateY(-2px); }
-
-.message-erreur {
-    margin-top: 18px;
-    padding: 12px;
-    border: 1px solid var(--notflix-erreur-bordure);
-    border-radius: var(--notflix-rayon);
-    background: var(--notflix-erreur-fond);
-    color: var(--notflix-erreur-texte);
-    text-align: center;
-}
-
-.lien-inscription,
-.lien-connexion { margin-top: 22px; color: var(--notflix-gris); text-align: center; }
-.lien-inscription a,
-.lien-connexion a { color: var(--notflix-rouge); font-weight: 700; }
-.lien-inscription a:hover,
-.lien-connexion a:hover { text-decoration: underline; }
-
+/* Style général du pied de page. */
 footer {
     margin-top: 40px;
     padding: 30px;
@@ -787,54 +820,199 @@ footer {
 }
 
 /* ===============================
-   Responsive regroupé
+   Adaptation aux écrans moyens
 ================================== */
+
 @media (max-width: 768px) {
+    /* Adapte la barre de navigation aux tablettes. */
     header,
-    .barre-navigation { align-items: flex-start; gap: 14px; }
-    nav ul { justify-content: flex-end; gap: 8px 18px; }
-    nav a { font-size: 0.95rem; }
-    .a-la-une { height: 45vh; min-height: 300px; }
-    .infos-une { bottom: 30px; left: 20px; max-width: 90%; }
-    .infos-une h2 { font-size: 2rem; }
-    .decouverte { padding: 20px; }
-    .carte-image { height: 260px; }
-    .conteneur-detail { padding: 40px 20px; }
-    .fiche-detail { flex-direction: column; align-items: center; gap: 30px; padding: 25px 20px; }
-    .affiche-detail { flex: none; width: 100%; max-width: 300px; max-height: none; }
-    .infos-detail { width: 100%; text-align: left; }
-    .infos-detail h1 { font-size: 2rem; }
-    .synopsis { max-width: none; }
-    .grille-contenus { padding: 0 20px 30px; gap: 15px; }
-    .carte-contenu img { height: 240px; }
+    .barre-navigation {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    /* Organise les liens de navigation. */
+    nav ul {
+        justify-content: flex-end;
+        gap: 8px 18px;
+    }
+
+    nav a {
+        font-size: 0.95rem;
+    }
+
+    /* Réduit la hauteur de la section principale. */
+    .a-la-une {
+        height: 45vh;
+        min-height: 300px;
+    }
+
+    /* Déplace les informations vers le bord de l'écran. */
+    .infos-une {
+        bottom: 30px;
+        left: 20px;
+        max-width: 90%;
+    }
+
+    .infos-une h2 {
+        font-size: 2rem;
+    }
+
+    /* Réduit les espacements des sections. */
+    .decouverte {
+        padding: 20px;
+    }
+
+    .carte-image {
+        height: 260px;
+    }
+
+    /* Adapte la page détail. */
+    .conteneur-detail {
+        padding: 40px 20px;
+    }
+
+    .fiche-detail {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding: 25px 20px;
+    }
+
+    .affiche-detail {
+        flex: none;
+        width: 100%;
+        max-width: 300px;
+        max-height: none;
+    }
+
+    .infos-detail {
+        width: 100%;
+        text-align: left;
+    }
+
+    .infos-detail h1 {
+        font-size: 2rem;
+    }
+
+    .synopsis {
+        max-width: none;
+    }
+
+    /* Adapte la grille de la liste personnelle. */
+    .grille-contenus {
+        padding: 0 20px 30px;
+        gap: 15px;
+    }
+
+    .carte-contenu img {
+        height: 240px;
+    }
 }
 
+/* ===============================
+   Adaptation aux petits écrans
+================================== */
+
 @media (max-width: 600px) {
+    /* Affiche la navigation verticalement. */
     header,
-    .barre-navigation { flex-direction: column; align-items: stretch; padding: 14px 20px; }
-    .logo { font-size: 1.65rem; }
+    .barre-navigation {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px 20px;
+    }
+
+    .logo {
+        font-size: 1.65rem;
+    }
+
     nav,
-    .barre-navigation nav { justify-content: flex-start; gap: 8px 16px; }
-    nav a { text-align: center; }
+    .barre-navigation nav {
+        justify-content: flex-start;
+        gap: 8px 16px;
+    }
+
+    nav a {
+        text-align: center;
+    }
+
+    /* Affiche le formulaire de recherche verticalement. */
     .form-recherche,
-    body > form:not(.form-recherche) { width: min(calc(100% - 24px), 900px); flex-direction: column; align-items: stretch; gap: 10px; }
+    body > form:not(.form-recherche) {
+        width: min(calc(100% - 24px), 900px);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    /* Les champs et boutons prennent toute la largeur. */
     .form-recherche input,
     .form-recherche select,
     .form-recherche button,
     body > form:not(.form-recherche) input,
-    body > form:not(.form-recherche) button { width: 100%; }
-    #boutonRecherche { width: calc(100% - 24px); margin: 20px auto 18px; }
+    body > form:not(.form-recherche) button {
+        width: 100%;
+    }
+
+    /* Agrandit le bouton de recherche sur mobile. */
+    #boutonRecherche {
+        width: calc(100% - 24px);
+        margin: 20px auto 18px;
+    }
 }
 
+/* ===============================
+   Adaptation aux très petits écrans
+================================== */
+
 @media (max-width: 480px) {
-    .conteneur-detail { padding: 25px 12px; }
-    .fiche-detail { padding: 20px 15px; }
-    .affiche-detail { max-width: 100%; }
-    .infos-detail h1 { font-size: 1.7rem; }
-    .btn-ajouter-liste { width: 100%; }
-    .barre-navigation nav { flex-direction: column; align-items: stretch; }
+    /* Réduit les marges de la page détail. */
+    .conteneur-detail {
+        padding: 25px 12px;
+    }
+
+    .fiche-detail {
+        padding: 20px 15px;
+    }
+
+    .affiche-detail {
+        max-width: 100%;
+    }
+
+    .infos-detail h1 {
+        font-size: 1.7rem;
+    }
+
+    /* Le bouton occupe toute la largeur. */
+    .btn-ajouter-liste {
+        width: 100%;
+    }
+
+    /* Affiche la navigation verticalement. */
+    .barre-navigation nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .barre-navigation nav a,
-    .bienvenue { width: 100%; text-align: center; }
-    .grille-contenus { grid-template-columns: 1fr 1fr; }
-    .carte-contenu img { height: 210px; }
+    .bienvenue {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Affiche deux cartes par ligne. */
+    .grille-contenus {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .carte-contenu img {
+        height: 210px;
+    }
+}
+/* Empêche le glisser-déposer des images */
+img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }

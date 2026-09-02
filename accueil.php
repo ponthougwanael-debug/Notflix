@@ -1,132 +1,238 @@
-<?php 
-require_once 'config/database.php';     /* Charge la configuration de la base de données require_once garantit que le fichier n'est inclus qu'une seule fois. */ 
-include 'includes/header.php';  /* Insère le fichier d'en-tête du site  */
+<?php
+// Charge le fichier contenant la connexion à la base de données.
+// require_once évite de charger plusieurs fois le même fichier.
+require_once 'config/database.php';
 
-// Contenu mis en avant : aléatoire à chaque chargement
-$requeteUne = $pdo->query("SELECT * FROM Contenu ORDER BY RAND() LIMIT 1");  /* Exécute une requète SQL qui sélectionne : SELECT * récupère toutes les colonne, ORDER BY RAND() mélange les résultats, LIMIT 1 conserve un seul résultat  */ 
+// Charge l'en-tête commun du site, par exemple le menu et le logo.
+include 'includes/header.php';
 
-$contenuUne = $requeteUne->fetch(); /* Récupère le contenu sélectionné sous forme de tableau associatif  */ 
 
-// Aperçu de films
-$requeteFilms = $pdo->query("SELECT * FROM Contenu WHERE Type = 'film' ORDER BY Annee DESC LIMIT 3"); /* Récupère les trois films les plus récents : WHERE Type = 'film' : filtre uniquelent les films, ORDER BY Annee DESC : trie par année décroissante   */ 
-$films = $requeteFilms->fetchAll(); /* Récupère tous les films trouvés dans un tableau.  */
+// --------------------------------------------------
+// RÉCUPÉRATION DU CONTENU MIS EN AVANT
+// --------------------------------------------------
 
-// Aperçu de séries
+// Exécute une requête SQL pour récupérer un contenu au hasard.
+// SELECT * récupère toutes les colonnes.
+// ORDER BY RAND() mélange les contenus.
+// LIMIT 1 demande un seul résultat.
+$requeteUne = $pdo->query(
+    "SELECT * FROM Contenu ORDER BY RAND() LIMIT 1"
+);
 
-$requeteSeries = $pdo->query("SELECT * FROM Contenu WHERE Type = 'serie' ORDER BY Annee DESC LIMIT 3"); /* Répueère les trois séries les plus récentes : WHERE Type = 'serie' : filtre uniquement les séries, ORDER BY Annee DESC : trie par année décroisante       */ 
-$series = $requeteSeries->fetchAll();  /* Récupère toutes les séries trouvées   */ 
+// Récupère le résultat de la requête.
+// Le contenu est stocké dans un tableau associatif.
+$contenuUne = $requeteUne->fetch();
+
+
+// --------------------------------------------------
+// RÉCUPÉRATION DES FILMS
+// --------------------------------------------------
+
+// Recherche les contenus dont le type est "film".
+// ORDER BY Annee DESC classe les films du plus récent au plus ancien.
+// LIMIT 3 : limite le résultat à trois films.
+$requeteFilms = $pdo->query(
+    "SELECT *
+     FROM Contenu
+     WHERE Type = 'film'
+     ORDER BY Annee DESC
+     LIMIT 3"
+);
+
+// Récupère les trois films sous forme de tableau.
+$films = $requeteFilms->fetchAll();
+
+
+// --------------------------------------------------
+// RÉCUPÉRATION DES SÉRIES
+// --------------------------------------------------
+
+// Recherche les contenus dont le type est "serie".
+// Les séries sont également classées de la plus récente à la plus ancienne.
+$requeteSeries = $pdo->query(
+    "SELECT *
+     FROM Contenu
+     WHERE Type = 'serie'
+     ORDER BY Annee DESC
+     LIMIT 3"
+);
+
+// Récupère toutes les séries trouvées.
+$series = $requeteSeries->fetchAll();
 ?>
 
-
-<!--------------------------------------------------------
-    
-        SECTION DU CONTENU MIS EN AVANT 
-
--->-------------------------------------------------------
-
+<!--
+    SECTION DU CONTENU MIS EN AVANT
+    Cette partie affiche un contenu choisi aléatoirement.
+-->
 <section class="a-la-une">
 
-    <img src="Images/<?= htmlspecialchars($contenuUne['Affiche']) ?>" 
+    <!--
+        Affiche l'affiche du contenu.
+        htmlspecialchars() protège la page contre l'injection de code HTML.
+    -->
+    <img
+        src="Images/<?= htmlspecialchars($contenuUne['Affiche']) ?>"
+        alt="<?= htmlspecialchars($contenuUne['Titre']) ?>"
+    >
 
-         alt="<?= htmlspecialchars($contenuUne['Titre']) ?>">   <!-- <_?_= : echo : version courte, $contenuUne['Affiche'] : contient le nom de l'affiche, htmlspecialchars() : protège le HTML contre les injection de code  -->
-
-
+    <!-- Contient le titre et l'année du contenu mis en avant. -->
     <div class="infos-une">
 
-        <h2><?= htmlspecialchars($contenuUne['Titre']) ?></h2> <!-- Affiche le titre du contenu -->
+        <!-- Affiche le titre du contenu. -->
+        <h2>
+            <?= htmlspecialchars($contenuUne['Titre']) ?>
+        </h2>
 
-        <p><?= htmlspecialchars($contenuUne['Annee']) ?></p> <!-- Affiche son année de sortie -->
+        <!-- Affiche l'année de sortie. -->
+        <p>
+            <?= htmlspecialchars($contenuUne['Annee']) ?>
+        </p>
 
     </div>
-
 </section>
 
 
+<!--
+    SECTION DES FILMS
+    Cette section affiche les trois films les plus récents.
+-->
 <section class="decouverte">
 
+    <!-- Titre visible de la section. -->
     <h2>Films à découvrir</h2>
 
-
+    <!-- Conteneur qui regroupe toutes les cartes de films. -->
     <div class="liste-cartes">
 
-        <?php foreach ($films as $film): ?> <!-- Parourt chaque film récupéré dans $films à chaque tour le film courant est stocké dans $film -->
+        <!--
+            Parcourt le tableau $films.
+            À chaque répétition, un film est placé dans la variable $film.
+        -->
+        <?php foreach ($films as $film): ?>
 
+            <!-- Carte représentant un film. -->
             <div class="carte">
 
+                <!-- Conteneur des images du film. -->
                 <div class="carte-image">
 
-                    <img src="Images/<?= htmlspecialchars($film['Affiche']) ?>" 
+                    <!--
+                        Image utilisée comme arrière-plan flou.
+                        La classe CSS "fond-flou" applique probablement un effet de flou.
+                        alt="" signifie que cette image est décorative.
+                    -->
+                    <img
+                        src="Images/<?= htmlspecialchars($film['Affiche']) ?>"
+                        class="fond-flou"
+                        alt=""
+                    >
 
-                         class="fond-flou" alt="">
-
-
-                    <img src="Images/<?= htmlspecialchars($film['Affiche']) ?>" 
-
-                         class="affiche-nette" 
-
-                         alt="<?= htmlspecialchars($film['Titre']) ?>">
+                    <!--
+                        Image principale affichée nettement.
+                        Le texte alternatif contient le titre du film.
+                    -->
+                    <img
+                        src="Images/<?= htmlspecialchars($film['Affiche']) ?>"
+                        class="affiche-nette"
+                        alt="<?= htmlspecialchars($film['Titre']) ?>"
+                    >
 
                 </div>
 
-                <h3><?= htmlspecialchars($film['Titre']) ?></h3>
+                <!-- Affiche le titre du film. -->
+                <h3>
+                    <?= htmlspecialchars($film['Titre']) ?>
+                </h3>
 
-                <p><?= htmlspecialchars($film['Annee']) ?></p>
+                <!-- Affiche l'année de sortie du film. -->
+                <p>
+                    <?= htmlspecialchars($film['Annee']) ?>
+                </p>
 
             </div>
 
+        <!-- Fin de la boucle qui parcourt les films. -->
         <?php endforeach; ?>
 
     </div>
-
 </section>
 
 
+<!--
+    SECTION DES SÉRIES
+    Cette section fonctionne comme celle des films,
+    mais elle affiche les séries.
+-->
 <section class="decouverte">
 
+    <!-- Titre visible de la section. -->
     <h2>Séries à découvrir</h2>
 
-
+    <!-- Conteneur qui regroupe les cartes des séries. -->
     <div class="liste-cartes">
 
+        <!--
+            Parcourt le tableau $series.
+            À chaque répétition, une série est placée dans $serie.
+        -->
         <?php foreach ($series as $serie): ?>
 
+            <!-- Carte représentant une série. -->
             <div class="carte">
 
+                <!-- Conteneur des images de la série. -->
                 <div class="carte-image">
-                    <img src="Images/<?= htmlspecialchars($serie['Affiche']) ?>" 
 
-                         class="fond-flou" alt="">
+                    <!-- Image floutée utilisée comme arrière-plan. -->
+                    <img
+                        src="Images/<?= htmlspecialchars($serie['Affiche']) ?>"
+                        class="fond-flou"
+                        alt=""
+                    >
 
-                    <img src="Images/<?= htmlspecialchars($serie['Affiche']) ?>" 
-
-                         class="affiche-nette" 
-                         alt="<?= htmlspecialchars($serie['Titre']) ?>">
+                    <!-- Image nette de la série. -->
+                    <img
+                        src="Images/<?= htmlspecialchars($serie['Affiche']) ?>"
+                        class="affiche-nette"
+                        alt="<?= htmlspecialchars($serie['Titre']) ?>"
+                    >
 
                 </div>
 
-                <h3><?= htmlspecialchars($serie['Titre']) ?></h3>
+                <!-- Affiche le titre de la série. -->
+                <h3>
+                    <?= htmlspecialchars($serie['Titre']) ?>
+                </h3>
 
-                <p><?= htmlspecialchars($serie['Annee']) ?></p>
+                <!-- Affiche l'année de sortie de la série. -->
+                <p>
+                    <?= htmlspecialchars($serie['Annee']) ?>
+                </p>
+
             </div>
 
+        <!-- Fin de la boucle qui parcourt les séries. -->
         <?php endforeach; ?>
 
     </div>
-
 </section>
 
 
-<!-- Un seul bouton pour toute la page -->
-
+<!--
+    Bouton permettant d'accéder à tous les films et séries.
+-->
 <div class="voir-plus">
 
+    <!-- Lien vers la page contenant.php. -->
     <a href="contenu.php" class="btn-catalogue">
-
         Voir le catalogue complet
-
     </a>
 
 </div>
 
 
-<?php include 'includes/footer.php'; ?>
+<?php
+// Charge le pied de page commun du site.
+include 'includes/footer.php';
+?>

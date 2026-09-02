@@ -1,105 +1,112 @@
-/* =========================================
-   PAGE CONNEXION — THÈME NOTFLIX
-========================================= */
-
+/* Conteneur principal de la page de connexion */
 .conteneur-connexion {
-    min-height: 75vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 20px;
-    background-color: #0b0b0b;
+    display: flex; /* Active Flexbox */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    min-height: 75vh; /* Hauteur minimale de 75 % de la fenêtre */
+    padding: 50px 20px; /* Espace intérieur : 50px vertical, 20px horizontal */
+    background-color: #0b0b0b; /* Fond noir */
 }
 
+/* Carte contenant le formulaire de connexion */
 .carte-connexion {
-    width: 100%;
-    max-width: 420px;
-    padding: 35px;
-    background-color: #1f1f1f;
-    border-radius: 8px;
+    width: 100%; /* Utilise toute la largeur disponible */
+    max-width: 420px; /* Largeur maximale de 420px */
+    padding: 35px; /* Espace entre le contenu et les bords */
+    border-radius: 8px; /* Coins arrondis */
+    background-color: #1f1f1f; /* Fond gris très foncé */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    /* Ajoute une ombre autour de la carte */
 }
 
+/* Titre de la carte */
 .carte-connexion h2 {
-    margin-bottom: 25px;
-    text-align: center;
-    color: #ffffff;
-    font-size: 2rem;
+    margin-bottom: 25px; /* Espace sous le titre */
+    color: #ffffff; /* Texte blanc */
+    font-size: 2rem; /* Taille du texte */
+    text-align: center; /* Centre le titre */
 }
 
+/* Formulaire de connexion */
 .carte-connexion form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: flex; /* Active Flexbox */
+    flex-direction: column; /* Place les éléments verticalement */
+    gap: 16px; /* Espace entre les éléments */
 }
 
+/* Étiquettes des champs */
 .carte-connexion label {
-    color: #d2d2d2;
-    font-weight: bold;
+    color: #d2d2d2; /* Couleur gris clair */
+    font-weight: bold; /* Texte en gras */
 }
 
+/* Champs de saisie */
 .carte-connexion input {
-    width: 100%;
-    padding: 13px 15px;
-    border: 1px solid #454545;
-    border-radius: 4px;
-    background-color: #262626;
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 1rem;
+    width: 100%; /* Occupe toute la largeur */
+    padding: 13px 15px; /* Espace intérieur vertical et horizontal */
+    border: 1px solid #454545; /* Bordure grise */
+    border-radius: 4px; /* Coins légèrement arrondis */
+    background-color: #262626; /* Fond gris foncé */
+    color: #ffffff; /* Texte saisi en blanc */
 }
 
+/* Texte indicatif dans les champs */
 .carte-connexion input::placeholder {
-    color: #999999;
+    color: #999999; /* Couleur grise du placeholder */
 }
 
+/* Style appliqué lorsqu'un champ est sélectionné */
 .carte-connexion input:focus {
-    outline: none;
-    border-color: #e50914;
+    outline: none; /* Supprime le contour automatique du navigateur */
+    border-color: #e50914; /* Bordure rouge */
     box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+    /* Ajoute un halo rouge autour du champ */
 }
 
+/* Bouton de connexion */
 .carte-connexion button {
-    margin-top: 10px;
-    padding: 13px;
-    border: none;
-    border-radius: 4px;
-    background-color: #e50914;
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-top: 10px; /* Espace au-dessus du bouton */
+    padding: 13px; /* Espace intérieur */
+    border: none; /* Supprime la bordure */
+    border-radius: 4px; /* Coins arrondis */
+    background-color: #e50914; /* Fond rouge */
+    color: #ffffff; /* Texte blanc */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Transforme le curseur en main */
 }
 
+/* Apparence du bouton au survol */
 .carte-connexion button:hover {
-    background-color: #b20710;
-    transform: translateY(-2px);
+    background-color: #b20710; /* Rouge plus foncé */
+    transform: translateY(-2px); /* Déplace légèrement le bouton vers le haut */
 }
 
-.message-erreur {
-    margin-top: 18px;
-    padding: 12px;
-    border: 1px solid #842029;
-    border-radius: 4px;
-    background-color: #3b171b;
-    color: #ffb3b8;
-    text-align: center;
+/* Message affiché en cas d'erreur */
+.carte-connexion .message-erreur {
+    margin-top: 18px; /* Espace au-dessus du message */
+    padding: 12px; /* Espace intérieur */
+    border: 1px solid #842029; /* Bordure rouge foncé */
+    border-radius: 4px; /* Coins arrondis */
+    background-color: #3b171b; /* Fond rouge très foncé */
+    color: #ffb3b8; /* Texte rose clair */
+    text-align: center; /* Centre le texte */
 }
 
+/* Texte contenant le lien d'inscription */
 .lien-inscription {
-    margin-top: 22px;
-    text-align: center;
-    color: #b3b3b3;
+    margin-top: 22px; /* Espace au-dessus du texte */
+    color: #b3b3b3; /* Texte gris */
+    text-align: center; /* Centre le texte */
 }
 
+/* Lien permettant de créer un compte */
 .lien-inscription a {
-    color: #e50914;
-    font-weight: bold;
+    color: #e50914; /* Lien rouge */
+    font-weight: bold; /* Texte en gras */
 }
 
+/* Apparence du lien au survol */
 .lien-inscription a:hover {
-    color: #ff4b55;
-    text-decoration: underline;
+    color: #ff4b55; /* Rouge plus clair */
+    text-decoration: underline; /* Souligne le lien */
 }

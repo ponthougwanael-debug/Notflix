@@ -1,89 +1,115 @@
+/* Style général de la page */
 body {
-    background-color: #141414;
-    background-image: url('../images/fond-cinema.jpg'); /* optionnel */
+    background-color: #141414; /* Couleur de fond de secours */
+    background-image: url('../images/fond-cinema.jpg');
+    /* Image utilisée comme arrière-plan */
+
     background-size: cover;
+    /* L'image couvre toute la fenêtre */
+
     background-position: center;
+    /* Centre l'image */
 }
 
+/* Conteneur principal du formulaire */
 .conteneur-inscription {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 85vh;
-    padding: 2rem;
+    display: flex; /* Active Flexbox */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    min-height: 85vh; /* Hauteur minimale de 85 % de la fenêtre */
+    padding: 2rem; /* Espace intérieur autour du formulaire */
 }
 
+/* Carte contenant le formulaire d'inscription */
 .carte-inscription {
+    width: 100%; /* Utilise toute la largeur disponible */
+    max-width: 400px; /* Largeur maximale de 400 pixels */
+    padding: 40px; /* Espace intérieur de la carte */
+    border-radius: 8px; /* Coins arrondis */
     background-color: rgba(0, 0, 0, 0.75);
-    padding: 40px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
+    /* Fond noir avec une transparence de 75 % */
+
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    /* Ombre autour de la carte */
 }
 
+/* Titre de la carte */
 .carte-inscription h2 {
-    color: white;
-    margin-bottom: 25px;
-    font-size: 1.8rem;
+    margin-bottom: 25px; /* Espace sous le titre */
+    color: #ffffff; /* Texte blanc */
+    font-size: 1.8rem; /* Taille du titre */
 }
 
+/* Formulaire */
+.carte-inscription form {
+    display: flex; /* Active Flexbox */
+    flex-direction: column; /* Dispose les champs verticalement */
+    gap: 16px; /* Espace entre les champs */
+}
+
+/* Champs de saisie */
 .carte-inscription input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 4px;
-    background-color: #333;
-    color: white;
-    font-size: 1rem;
+    width: 100%; /* Les champs occupent toute la largeur */
+    padding: 14px; /* Espace intérieur */
+    border: none; /* Supprime la bordure */
+    border-radius: 4px; /* Coins légèrement arrondis */
+    background-color: #333333; /* Fond gris foncé */
+    color: #ffffff; /* Texte saisi en blanc */
 }
 
+/* Texte indicatif des champs */
 .carte-inscription input::placeholder {
-    color: #aaa;
+    color: #aaaaaa; /* Couleur grise du texte indicatif */
 }
 
+/* Style des champs lorsqu'ils sont sélectionnés */
 .carte-inscription input:focus {
-    outline: 2px solid red;
+    outline: 2px solid #e50914;
+    /* Ajoute un contour rouge */
+
     background-color: #454545;
+    /* Éclaircit le fond du champ */
 }
 
+/* Bouton d'inscription */
 .carte-inscription button {
-    width: 100%;
-    padding: 14px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
+    width: 100%; /* Le bouton occupe toute la largeur */
+    margin-top: 10px; /* Espace au-dessus du bouton */
+    padding: 14px; /* Espace intérieur */
+    border: none; /* Supprime la bordure */
+    border-radius: 4px; /* Coins arrondis */
+    background-color: #e50914; /* Fond rouge */
+    color: #ffffff; /* Texte blanc */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Affiche le curseur en forme de main */
 }
 
+/* Apparence du bouton au survol */
 .carte-inscription button:hover {
-    background-color: #c40000;
+    background-color: #c40000; /* Rouge plus foncé */
 }
 
-.message-erreur {
-    color: #ff6b6b;
-    margin-top: 10px;
-    font-size: 0.9rem;
+/* Message d'erreur */
+.carte-inscription .message-erreur {
+    margin-top: 10px; /* Espace au-dessus du message */
+    color: #ff6b6b; /* Texte rouge clair */
+    font-size: 0.9rem; /* Texte légèrement réduit */
 }
 
+/* Zone contenant le lien de connexion */
 .lien-connexion {
-    color: #aaa;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    text-align: center;
+    margin-top: 20px; /* Espace au-dessus du texte */
+    color: #aaaaaa; /* Texte gris */
+    text-align: center; /* Centre le texte */
 }
 
+/* Lien vers la page de connexion */
 .lien-connexion a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+    color: #ffffff; /* Lien blanc */
+    font-weight: bold; /* Texte en gras */
 }
 
+/* Apparence du lien au survol */
 .lien-connexion a:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* Souligne le lien */
 }

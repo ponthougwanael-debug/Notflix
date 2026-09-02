@@ -1,13 +1,13 @@
 /*
  * Feuille complémentaire de recherche.
- * Les règles sont volontairement ciblées : elles ne réinitialisent pas les
- * formulaires globaux et n'entrent donc pas en conflit avec style.css.
+ * Définit les styles spécifiques aux formulaires de recherche.
+ * N'agit pas sur les formulaires généraux du site.
  */
 
 .form-recherche {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: flex; /* Place les éléments sur une même ligne. */
+    align-items: center; /* Centre verticalement les éléments. */
+    gap: 12px; /* Ajoute un espace de 12 pixels entre les éléments. */
 }
 
 .form-recherche input,
@@ -15,63 +15,65 @@
 .form-recherche button,
 body > form:not(.form-recherche) input,
 body > form:not(.form-recherche) button {
-    box-sizing: border-box;
-    color-scheme: dark;
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la taille. */
+    color-scheme: dark; /* Utilise l'apparence sombre du navigateur. */
 }
 
-/* Compatibilité avec recherche.php, dont le formulaire n'a pas de classe. */
+/* Cible le formulaire de recherche de recherche.php, sans classe CSS. */
 body > form:not(.form-recherche) {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: min(100% - 40px, 900px);
-    margin: 30px auto;
+    display: flex; /* Active l'affichage flexible. */
+    align-items: center; /* Centre les éléments verticalement. */
+    gap: 12px; /* Ajoute un espace entre les éléments. */
+    width: min(100% - 40px, 900px); /* Limite la largeur à 900 pixels. */
+    margin: 30px auto; /* Ajoute une marge et centre le formulaire. */
 }
 
 body > form:not(.form-recherche) input {
-    flex: 1;
-    min-width: 0;
-    min-height: 48px;
-    padding: 12px 15px;
-    border: 1px solid #454545;
-    border-radius: 4px;
-    background-color: #262626;
-    color: #f5f5f5;
-    font: inherit;
+    flex: 1; /* Le champ occupe l'espace disponible. */
+    min-width: 0; /* Autorise le champ à rétrécir. */
+    min-height: 48px; /* Définit une hauteur minimale. */
+    padding: 12px 15px; /* Ajoute un espace intérieur. */
+    border: 1px solid #454545; /* Ajoute une bordure grise. */
+    border-radius: 4px; /* Arrondit les coins. */
+    background-color: #262626; /* Définit un fond sombre. */
+    color: #f5f5f5; /* Définit la couleur du texte. */
+    font: inherit; /* Utilise la police du parent. */
 }
 
 body > form:not(.form-recherche) input::placeholder {
-    color: #999;
+    color: #999; /* Définit la couleur du texte indicatif. */
 }
 
 body > form:not(.form-recherche) button {
-    min-height: 48px;
-    padding: 12px 22px;
-    border: 0;
-    border-radius: 4px;
-    background-color: #e50914;
-    color: #fff;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
+    min-height: 48px; /* Définit une hauteur minimale. */
+    padding: 12px 22px; /* Ajoute un espace intérieur. */
+    border: 0; /* Supprime la bordure. */
+    border-radius: 4px; /* Arrondit les coins. */
+    background-color: #e50914; /* Donne une couleur rouge au bouton. */
+    color: #fff; /* Définit la couleur du texte en blanc. */
+    font: inherit; /* Utilise la police du parent. */
+    font-weight: 700; /* Met le texte en gras. */
+    cursor: pointer; /* Affiche un curseur en forme de main. */
 }
 
 body > form:not(.form-recherche) button:hover,
 body > form:not(.form-recherche) button:focus-visible {
-    background-color: #b20710;
+    background-color: #b20710; /* Assombrit le bouton au survol ou au clavier. */
 }
 
 @media (max-width: 600px) {
+    /* Ces règles s'appliquent aux écrans de 600 pixels ou moins. */
+
     .form-recherche,
     body > form:not(.form-recherche) {
-        width: min(100% - 24px, 900px);
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        width: min(100% - 24px, 900px); /* Adapte la largeur sur mobile. */
+        flex-direction: column; /* Place les éléments verticalement. */
+        align-items: stretch; /* Étire les éléments sur toute la largeur. */
+        gap: 10px; /* Réduit l'espace entre les éléments. */
     }
 
     body > form:not(.form-recherche) input,
     body > form:not(.form-recherche) button {
-        width: 100%;
+        width: 100%; /* Le champ et le bouton prennent toute la largeur. */
     }
 }

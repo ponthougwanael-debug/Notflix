@@ -1,138 +1,128 @@
-<?php
-require_once 'config/database.php';
+<?php // Début du code PHP
 
-$erreurs = [];
+require_once 'config/database.php'; // Charge la connexion à la base de données
 
-$nom = '';
-$prenom = '';
-$email = '';
+$erreurs = []; // Crée un tableau pour stocker les erreurs
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom = trim($_POST['nom'] ?? '');
-    $prenom = trim($_POST['prenom'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $motdepasse = $_POST['motdepasse'] ?? '';
+$nom = ''; // Initialise le nom
+$prenom = ''; // Initialise le prénom
+$email = ''; // Initialise l'adresse e-mail
 
-    if (
-        empty($nom) ||
-        empty($prenom) ||
-        empty($email) ||
-        empty($motdepasse)
-    ) {
-        $erreurs[] = "Tous les champs sont obligatoires.";
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Vérifie si le formulaire a été envoyé
 
-    if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $erreurs[] = "Email invalide.";
-    }
+    $nom = trim($_POST['nom'] ?? ''); // Récupère et nettoie le nom
+    $prenom = trim($_POST['prenom'] ?? ''); // Récupère et nettoie le prénom
+    $email = trim($_POST['email'] ?? ''); // Récupère et nettoie l'e-mail
+    $motdepasse = $_POST['motdepasse'] ?? ''; // Récupère le mot de passe
 
-    if (!empty($motdepasse) && strlen($motdepasse) < 8) {
-        $erreurs[] = "Le mot de passe doit contenir au moins 8 caractères.";
-    }
+    if ( // Commence la vérification des champs
+        empty($nom) || // Vérifie si le nom est vide
+        empty($prenom) || // Vérifie si le prénom est vide
+        empty($email) || // Vérifie si l'e-mail est vide
+        empty($motdepasse) // Vérifie si le mot de passe est vide
+    ) { // Fin de la condition
+        $erreurs[] = "Tous les champs sont obligatoires."; // Ajoute un message d'erreur
+    } // Fin de la vérification des champs
 
-    if (empty($erreurs)) {
-        $stmt = $pdo->prepare(
-            "SELECT * FROM UTILISATEUR WHERE Email = ?"
-        );
-        $stmt->execute([$email]);
+    if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) { // Vérifie le format de l'e-mail
+        $erreurs[] = "Email invalide."; // Ajoute une erreur si l'e-mail est incorrect
+    } // Fin de la vérification de l'e-mail
 
-        if ($stmt->fetch()) {
-            $erreurs[] = "Cet email est déjà utilisé.";
-        }
-    }
+    if (!empty($motdepasse) && strlen($motdepasse) < 8) { // Vérifie que le mot de passe contient au moins 8 caractères
+        $erreurs[] = "Le mot de passe doit contenir au moins 8 caractères."; // Ajoute une erreur
+    } // Fin de la vérification du mot de passe
 
-    if (empty($erreurs)) {
-        $hash = password_hash($motdepasse, PASSWORD_DEFAULT);
+    if (empty($erreurs)) { // Continue seulement s'il n'y a aucune erreur
 
-        $stmt = $pdo->prepare(
-            "INSERT INTO UTILISATEUR
-            (Nom, Prenom, Email, MotDePasse)
-            VALUES (?, ?, ?, ?)"
-        );
+        $stmt = $pdo->prepare( // Prépare une requête SQL
+            "SELECT * FROM UTILISATEUR WHERE Email = ?" // Recherche un utilisateur avec cet e-mail
+        ); // Termine la préparation de la requête
 
-        $stmt->execute([
-            $nom,
-            $prenom,
-            $email,
-            $hash
-        ]);
+        $stmt->execute([$email]); // Exécute la requête avec l'e-mail fourni
 
-        header("Location: includes/connexion.php");
-        exit;
-    }
-}
+        if ($stmt->fetch()) { // Vérifie si un utilisateur a été trouvé
+            $erreurs[] = "Cet email est déjà utilisé."; // Ajoute une erreur si l'e-mail existe
+        } // Fin de la vérification de l'e-mail existant
+    } // Fin de la vérification des erreurs
 
-// Inclusion de l'en-tête après le traitement PHP
-ob_start(static function (string $html): string {
-    $liensCSS =
-        "    <link rel=\"stylesheet\" href=\"css/style.css\">\n" .
-        "    <link rel=\"stylesheet\" href=\"css/inscription.css\">\n";
+    if (empty($erreurs)) { // Continue si aucune erreur n'existe
 
-    $positionHead = stripos($html, '</head>');
+        $hash = password_hash($motdepasse, PASSWORD_DEFAULT); // Sécurise le mot de passe
 
-    if ($positionHead === false) {
-        return $html;
-    }
+        $stmt = $pdo->prepare( // Prépare la requête d'insertion
+            "INSERT INTO UTILISATEUR // Indique la table à utiliser
+            (Nom, Prenom, Email, MotDePasse) // Indique les colonnes
+            VALUES (?, ?, ?, ?)" // Indique les valeurs à insérer
+        ); // Termine la préparation
 
-    return substr_replace($html, $liensCSS, $positionHead, 0);
-});
+        $stmt->execute([ // Exécute l'insertion
+            $nom, // Insère le nom
+            $prenom, // Insère le prénom
+            $email, // Insère l'e-mail
+            $hash // Insère le mot de passe chiffré
+        ]); // Termine l'insertion
 
-include 'includes/header.php';
+        header("Location: includes/connexion.php"); // Redirige vers la connexion
+        exit; // Arrête le script
+    } // Fin de l'inscription
+} // Fin du traitement POST
+
+ob_start(static function (string $html): string { // Commence la mise en mémoire de la page
+
+    $liensCSS = // Crée les liens vers les fichiers CSS
+        "    <link rel=\"stylesheet\" href=\"css/style.css\">\n" . // Ajoute le CSS général
+        "    <link rel=\"stylesheet\" href=\"css/inscription.css\">\n"; // Ajoute le CSS de l'inscription
+
+    $positionHead = stripos($html, '</head>'); // Cherche la balise fermante head
+
+    if ($positionHead === false) { // Vérifie si la balise head est absente
+        return $html; // Retourne la page sans modification
+    } // Fin de la vérification
+
+    return substr_replace($html, $liensCSS, $positionHead, 0); // Ajoute les CSS avant </head>
+}); // Termine la fonction de mise en mémoire
+
+include 'includes/header.php'; // Affiche l'en-tête
 ?>
 
-<div class="conteneur-inscription">
-    <div class="carte-inscription">
-        <h2>Inscription</h2>
+<div class="conteneur-inscription"> <!-- Crée le conteneur principal -->
+    <div class="carte-inscription"> <!-- Crée la carte d'inscription -->
 
-        <form method="POST">
-            <input
-                type="text"
-                name="nom"
-                placeholder="Nom"
-                value="<?= htmlspecialchars($nom) ?>"
-                required
-            >
+        <h2>Inscription</h2> <!-- Affiche le titre -->
 
-            <input
-                type="text"
-                name="prenom"
-                placeholder="Prénom"
-                value="<?= htmlspecialchars($prenom) ?>"
-                required
-            >
+        <form method="POST"> <!-- Crée le formulaire envoyé en POST -->
 
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value="<?= htmlspecialchars($email) ?>"
-                required
-            >
+            <input type="text" name="nom" placeholder="Nom"
+                   value="<?= htmlspecialchars($nom) ?>" required> <!-- Champ du nom -->
 
-            <input
-                type="password"
-                name="motdepasse"
-                placeholder="Mot de passe"
-                required
-            >
+            <input type="text" name="prenom" placeholder="Prénom"
+                   value="<?= htmlspecialchars($prenom) ?>" required> <!-- Champ du prénom -->
 
-            <button type="submit">S'inscrire</button>
-        </form>
+            <input type="email" name="email" placeholder="Email"
+                   value="<?= htmlspecialchars($email) ?>" required> <!-- Champ de l'e-mail -->
 
-        <?php foreach ($erreurs as $erreur): ?>
-            <p class="message-erreur">
-                <?= htmlspecialchars($erreur) ?>
-            </p>
-        <?php endforeach; ?>
+            <input type="password" name="motdepasse"
+                   placeholder="Mot de passe" required> <!-- Champ du mot de passe -->
 
-        <p class="lien-connexion">
-            Déjà un compte ?
-            <a href="includes/connexion.php">Se connecter</a>
-        </p>
-    </div>
-</div>
+            <button type="submit">S'inscrire</button> <!-- Bouton d'inscription -->
+
+        </form> <!-- Ferme le formulaire -->
+
+        <?php foreach ($erreurs as $erreur): ?> <!-- Parcourt les erreurs -->
+            <p class="message-erreur"> <!-- Crée un paragraphe d'erreur -->
+                <?= htmlspecialchars($erreur) ?> <!-- Affiche l'erreur en sécurité -->
+            </p> <!-- Ferme le paragraphe -->
+        <?php endforeach; ?> <!-- Termine la boucle -->
+
+        <p class="lien-connexion"> <!-- Crée le texte de connexion -->
+            Déjà un compte ? <!-- Affiche le message -->
+            <a href="includes/connexion.php">Se connecter</a> <!-- Crée le lien de connexion -->
+        </p> <!-- Ferme le paragraphe -->
+
+    </div> <!-- Ferme la carte -->
+</div> <!-- Ferme le conteneur -->
 
 <?php
-include 'includes/footer.php';
-ob_end_flush();
-?>
+include 'includes/footer.php'; // Affiche le pied de page
+ob_end_flush(); // Envoie le contenu mémorisé au navigateur
+?> <!-- Fin du code PHP -->

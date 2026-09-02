@@ -2,7 +2,6 @@
 // Charge la connexion à la base de données.
 require_once 'config/database.php';
 
-
 // --------------------------------------------------
 // RÉCUPÉRATION DES FILTRES ENVOYÉS PAR L'UTILISATEUR
 // --------------------------------------------------
